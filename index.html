@@ -42,8 +42,8 @@
         });
 
         $(window).resize(function(e){
-          canvas.width = $(window).width();
-          canvas.height = $(window).height();
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
         });
 
         $(canvas).mousedown(function(e){
