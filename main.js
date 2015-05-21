@@ -9,9 +9,12 @@ var KEY_SPACEBAR = 32;
 
 var canvas, ctx;
 
+var prevTime = window.performance.now();
+
+var mouseX = 0, mouseY = 0;
+
 var createRadius = CREATE_RADIUS_INIT;
 var createHolding = false;
-var createX, createY;
 
 document.addEventListener('DOMContentLoaded', function(e) {
   canvas = document.getElementById('sol-canvas');
@@ -21,9 +24,16 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
   var planets = getStartingPlanets();
 
-  window.setInterval(function() {
-    tick(planets);
-  }, TIMESTEP);
+  var rafCallback = function(timestamp) {
+    let deltaTime = timestamp - prevTime;
+    tick(planets, deltaTime);
+    prevTime = timestamp;
+    window.requestAnimationFrame(rafCallback);
+  }
+
+  // window.setInterval(function() {
+  //   tick(planets);
+  // }, TIMESTEP);
 
   document.addEventListener('keydown', function(e) {
     if (e.which == KEY_SPACEBAR) {
@@ -36,27 +46,62 @@ document.addEventListener('DOMContentLoaded', function(e) {
     canvas.height = window.innerHeight;
   });
 
-  var createStart = function(e) {
+  var createStart = function() {
     createHolding = true;
     createRadius = CREATE_RADIUS_INIT;
-    createX = e.clientX;
-    createY = e.clientY;
   }
 
-  var createMove = function(e) {
-    createX = e.clientX;
-    createY = e.clientY;
+  var createFinish = function() {
+    if (createHolding) {
+      planets.push(new Planet(createRadius, mouseX, mouseY, 0.0, 0.0));
+      createHolding = false;
+    }
   }
 
-  var createFinish = function(e) {
-    planets.push(new Planet(createRadius, createX, createY, 0.0, 0.0));
+  var createCancel = function() {
     createHolding = false;
-    createRadius = CREATE_RADIUS_INIT;
   }
 
-  canvas.addEventListener('mousedown', createStart);
-  canvas.addEventListener('mousemove', createMove);
-  canvas.addEventListener('mouseup', createFinish);
+  canvas.addEventListener('mousemove', function(e) {
+    mouseX = e.pageX;
+    mouseY = e.pageY;
+  });
+
+  canvas.addEventListener('mousedown', function(e) {
+    createStart();
+  });
+
+  canvas.addEventListener('mouseup', function(e) {
+    createFinish();
+  });
+
+  canvas.addEventListener('mouseleave', function(e) {
+    createCancel();
+  });
+  
+  canvas.addEventListener('touchmove', function(e) {
+    mouseX = e.changedTouches[0].pageX;
+    mouseY = e.changedTouches[0].pageY;
+  });
+
+  canvas.addEventListener('touchstart', function(e) {
+    mouseX = e.changedTouches[0].pageX;
+    mouseY = e.changedTouches[0].pageY;
+    createStart();
+  });
+
+  canvas.addEventListener('touchend', function(e) {
+    mouseX = e.changedTouches[0].pageX;
+    mouseY = e.changedTouches[0].pageY;
+    createFinish();
+  });
+
+  canvas.addEventListener('touchcancel', function(e) {
+    createCancel();
+  });
+
+  // begin the gameloop
+  window.requestAnimationFrame(rafCallback);
 });
 
 function getStartingPlanets() {
@@ -83,7 +128,7 @@ function outOfBounds(p) {
          p.state.y < -BOUND_MARGIN || p.state.y > canvas.height + BOUND_MARGIN;
 }
 
-function tick(planets) {
+function tick(planets, deltaTime) {
   var vx, vy;
 
   if (createHolding) {
@@ -131,7 +176,7 @@ function tick(planets) {
       continue;
     }
 
-    p.update(planets, TIMESTEP);
+    p.update(planets, deltaTime);
   }
 
   for (var i = 0; i < planets.length; i++) {
@@ -140,17 +185,33 @@ function tick(planets) {
 }
 
 function draw(planets) {
-  ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  //ctx.fillStyle = 'white';
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  // planet creation UI
   if (createHolding) {
-    ctx.strokeStyle = 'grey';
+    // outline of new planet
+    // ctx.strokeStyle = 'grey';
+    // ctx.beginPath();
+    // ctx.arc(mouseX, mouseY, createRadius, 0, 2.0*Math.PI, false);
+    // ctx.stroke();
+    // axial lines (clearer for touch devices)
+    ctx.strokeStyle = 'rgba(255,0,0,0.5)';
     ctx.beginPath();
-    ctx.arc(createX, createY, createRadius, 0, 2.0*Math.PI, false);
+    // vertical lines
+    ctx.moveTo(mouseX - createRadius, 0);
+    ctx.lineTo(mouseX - createRadius, canvas.height);
+    ctx.moveTo(mouseX + createRadius, 0);
+    ctx.lineTo(mouseX + createRadius, canvas.height);
+    // horizontal lines
+    ctx.moveTo(0,            mouseY - createRadius);
+    ctx.lineTo(canvas.width, mouseY - createRadius);
+    ctx.moveTo(0,            mouseY + createRadius);
+    ctx.lineTo(canvas.width, mouseY + createRadius);
     ctx.stroke();
   }
 
-  ctx.fillStyle = 'white';
+  ctx.fillStyle = 'black';
   for (var p, i = 0; i < planets.length; i++) {
     p = planets[i];
 
@@ -159,7 +220,8 @@ function draw(planets) {
     }
 
     ctx.beginPath();
-    ctx.arc(p.state.x, p.state.y, p.radius, 0, 2.0*Math.PI, false);
+    let drawRadius = Math.max(p.radius, 1.0);
+    ctx.arc(p.state.x, p.state.y, drawRadius, 0, 2.0*Math.PI, false);
     ctx.fill();
   }
 }
