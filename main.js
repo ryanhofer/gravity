@@ -36,23 +36,27 @@ document.addEventListener('DOMContentLoaded', function(e) {
     canvas.height = window.innerHeight;
   });
 
-  canvas.addEventListener('mousedown', function(e) {
+  var createStart = function(e) {
     createHolding = true;
     createRadius = CREATE_RADIUS_INIT;
     createX = e.clientX;
     createY = e.clientY;
-  });
+  }
 
-  canvas.addEventListener('mousemove', function(e) {
+  var createMove = function(e) {
     createX = e.clientX;
     createY = e.clientY;
-  });
+  }
 
-  canvas.addEventListener('mouseup', function(e) {
+  var createFinish = function(e) {
     planets.push(new Planet(createRadius, createX, createY, 0.0, 0.0));
     createHolding = false;
     createRadius = CREATE_RADIUS_INIT;
-  });
+  }
+
+  canvas.addEventListener('mousedown', createStart);
+  canvas.addEventListener('mousemove', createMove);
+  canvas.addEventListener('mouseup', createFinish);
 });
 
 function getStartingPlanets() {
