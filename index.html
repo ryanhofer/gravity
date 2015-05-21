@@ -23,7 +23,7 @@
       var createHolding = false;
       var createX, createY;
 
-      $(document).ready(function(){
+      document.addEventListener('DOMContentLoaded', function(e) {
         canvas = document.getElementById('sol-canvas');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -31,34 +31,34 @@
 
         var planets = getStartingPlanets();
 
-        window.setInterval(function(){
+        window.setInterval(function() {
           tick(planets);
         }, TIMESTEP);
 
-        $(document).keydown(function(e){
+        document.addEventListener('keydown', function(e) {
           if (e.which == KEY_SPACEBAR) {
             planets = getStartingPlanets();
           }
         });
 
-        $(window).resize(function(e){
+        window.addEventListener('resize', function(e) {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
         });
 
-        $(canvas).mousedown(function(e){
+        canvas.addEventListener('mousedown', function(e) {
           createHolding = true;
           createRadius = CREATE_RADIUS_INIT;
           createX = e.pageX - $(this).offset().left;
           createY = e.pageY - $(this).offset().top;
         });
 
-        $(canvas).mousemove(function(e){
+        canvas.addEventListener('mousemove', function(e) {
           createX = e.pageX - $(this).offset().left;
           createY = e.pageY - $(this).offset().top;
         });
 
-        $(canvas).mouseup(function(e){
+        canvas.addEventListener('mouseup', function(e) {
           planets.push(new Planet(createRadius, createX, createY, 0.0, 0.0));
           createHolding = false;
           createRadius = CREATE_RADIUS_INIT;
