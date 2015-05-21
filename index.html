@@ -112,7 +112,7 @@
               continue;
             }
 
-            if (p1.colliding(p2)) { console.log(p1.state, p2.state);
+            if (p1.colliding(p2)) {
               if (p2.mass > p1.mass) {
                 pt = p1;
                 p1 = p2;
@@ -125,7 +125,6 @@
               p1.radius = p1.getRadiusFromMass(p1.mass);
               p1.state.vx = vx;
               p1.state.vy = vy;
-              console.log(p1);
             }
           }
         }
