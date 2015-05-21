@@ -1,3 +1,5 @@
+'use strict';
+
 // -- State class --------------------------------------------------------------
 
 function State(x, y, vx, vy) {
@@ -53,7 +55,7 @@ Planet.prototype.acceleration = function(state, planets) {
     d2 = dx * dx + dy * dy;
     d = Math.sqrt(d2);
 
-    force = d2 > 1e-10 ? this.mass * p.mass * this.GRAVITY / d2 : 0;
+    let force = d2 > 1e-10 ? this.mass * p.mass * this.GRAVITY / d2 : 0;
 
     ax += (force / this.mass) * dx / d;
     ay += (force / this.mass) * dy / d;

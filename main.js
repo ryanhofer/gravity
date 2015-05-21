@@ -1,3 +1,5 @@
+'use strict';
+
 var TIMESTEP = 20;
 var CREATE_RADIUS_INIT = 0.5;
 var CREATE_RADIUS_INCR = 0.1;
@@ -102,7 +104,7 @@ function tick(planets) {
 
       if (p1.colliding(p2)) {
         if (p2.mass > p1.mass) {
-          pt = p1;
+          let pt = p1;
           p1 = p2;
           p2 = pt;
         }
