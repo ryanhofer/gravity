@@ -25,8 +25,8 @@
 
       $(document).ready(function(){
         canvas = document.getElementById('sol-canvas');
-        canvas.width = $(window).width();
-        canvas.height = $(window).height();
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         ctx = canvas.getContext('2d');
 
         var planets = getStartingPlanets();
