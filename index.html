@@ -49,13 +49,13 @@
         canvas.addEventListener('mousedown', function(e) {
           createHolding = true;
           createRadius = CREATE_RADIUS_INIT;
-          createX = e.pageX - $(this).offset().left;
-          createY = e.pageY - $(this).offset().top;
+          createX = e.clientX;
+          createY = e.clientY;
         });
 
         canvas.addEventListener('mousemove', function(e) {
-          createX = e.pageX - $(this).offset().left;
-          createY = e.pageY - $(this).offset().top;
+          createX = e.clientX;
+          createY = e.clientY;
         });
 
         canvas.addEventListener('mouseup', function(e) {
