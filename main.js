@@ -76,17 +76,20 @@ document.addEventListener('DOMContentLoaded', function(e) {
   });
   
   canvas.addEventListener('touchmove', function(e) {
+    e.preventDefault();
     mouseX = e.changedTouches[0].pageX;
     mouseY = e.changedTouches[0].pageY;
   });
 
   canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault();
     mouseX = e.changedTouches[0].pageX;
     mouseY = e.changedTouches[0].pageY;
     createStart();
   });
 
   canvas.addEventListener('touchend', function(e) {
+    e.preventDefault();
     mouseX = e.changedTouches[0].pageX;
     mouseY = e.changedTouches[0].pageY;
     createFinish();
