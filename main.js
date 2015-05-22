@@ -31,10 +31,6 @@ document.addEventListener('DOMContentLoaded', function(e) {
     window.requestAnimationFrame(rafCallback);
   }
 
-  // window.setInterval(function() {
-  //   tick(planets);
-  // }, TIMESTEP);
-
   document.addEventListener('keydown', function(e) {
     if (e.which == KEY_SPACEBAR) {
       planets = getStartingPlanets();
