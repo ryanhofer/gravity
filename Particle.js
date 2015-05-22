@@ -74,14 +74,14 @@ Particle.prototype.update = function(particles, dt) {
   this.evalRK4(c, particles, b, dt * 0.5);
   this.evalRK4(d, particles, c, dt);
 
-  var dxdt = (a.pos.x + 2.0 * (b.pos.x + c.pos.x) + d.pos.x) / 6.0;
-  var dydt = (a.pos.y + 2.0 * (b.pos.y + c.pos.y) + d.pos.y) / 6.0;
+  var dpxdt = (a.pos.x + 2.0 * (b.pos.x + c.pos.x) + d.pos.x) / 6.0;
+  var dpydt = (a.pos.y + 2.0 * (b.pos.y + c.pos.y) + d.pos.y) / 6.0;
   var dvxdt = (a.vel.x + 2.0 * (b.vel.x + c.vel.x) + d.vel.x) / 6.0;
   var dvydt = (a.vel.y + 2.0 * (b.vel.y + c.vel.y) + d.vel.y) / 6.0;
 
   this.nextState.set(
-    this.state.pos.x + dxdt * dt,
-    this.state.pos.y + dydt * dt,
+    this.state.pos.x + dpxdt * dt,
+    this.state.pos.y + dpydt * dt,
     this.state.vel.x + dvxdt * dt,
     this.state.vel.y + dvydt * dt
   );
