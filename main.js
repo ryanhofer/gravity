@@ -128,23 +128,21 @@ function outOfBounds(p) {
 }
 
 function tick(planets, deltaTime) {
-  var vx, vy;
-
   if (createHolding) {
     createRadius += CREATE_RADIUS_INCR;
   }
 
   draw(planets);
 
-  for (var p1, i = 0; i < planets.length; i++) {
-    p1 = planets[i];
+  for (let i = 0; i < planets.length; i++) {
+    let p1 = planets[i];
 
     if (p1.merged) {
       continue;
     }
 
-    for (var p2, j = 0; j < planets.length; j++) {
-      p2 = planets[j];
+    for (let j = 0; j < planets.length; j++) {
+      let p2 = planets[j];
 
       if (p1 == p2 || p2.merged) {
         continue;
@@ -157,8 +155,8 @@ function tick(planets, deltaTime) {
           p2 = pt;
         }
         p2.merged = true;
-        vx = (p1.state.vx * p1.mass + p2.state.vx * p2.mass) / (p1.mass + p2.mass);
-        vy = (p1.state.vy * p1.mass + p2.state.vy * p2.mass) / (p1.mass + p2.mass);
+        let vx = (p1.state.vx * p1.mass + p2.state.vx * p2.mass) / (p1.mass + p2.mass);
+        let vy = (p1.state.vy * p1.mass + p2.state.vy * p2.mass) / (p1.mass + p2.mass);
         p1.mass += p2.mass;
         p1.radius = p1.getRadiusFromMass(p1.mass);
         p1.state.vx = vx;
@@ -167,8 +165,8 @@ function tick(planets, deltaTime) {
     }
   }
 
-  for (var p, i = 0; i < planets.length; i++) {
-    p = planets[i];
+  for (let i = 0; i < planets.length; i++) {
+    let p = planets[i];
 
     if (p.merged || outOfBounds(p)) {
       planets.splice(i, 1);
@@ -178,7 +176,7 @@ function tick(planets, deltaTime) {
     p.update(planets, deltaTime);
   }
 
-  for (var i = 0; i < planets.length; i++) {
+  for (let i = 0; i < planets.length; i++) {
     planets[i].move();
   }
 }
