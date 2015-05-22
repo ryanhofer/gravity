@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     window.requestAnimationFrame(rafCallback);
   }
 
-  document.addEventListener('keydown', function (e) {
+  window.addEventListener('keydown', function (e) {
     if (e.which == KEY_SPACEBAR) {
       particles = getStartingParticles();
     }
@@ -130,23 +130,36 @@ function tick(particles, deltaTime) {
     for (var j = 0; j < particles.length; j++) {
       var p2 = particles[j];
 
-      if (p1 == p2 || p2.merged) {
+      if (p1.merged) {
+        break;
+      }
+
+      if (p1 === p2 || p2.merged) {
         continue;
       }
 
       if (p1.colliding(p2)) {
-        if (p2.mass > p1.mass) {
-          var pt = p1;
-          p1 = p2;
-          p2 = pt;
+        // if (p2.mass > p1.mass) {
+        //   var pt = p1;
+        //   p1 = p2;
+        //   p2 = pt;
+        // }
+        var pL; // larger
+        var pS; // smaller
+        if (p1.mass > p2.mass) {
+          pL = p1;
+          pS = p2;
+        } else {
+          pL = p2;
+          pS = p1;
         }
-        p2.merged = true;
-        var vx = (p1.state.vel.x * p1.mass + p2.state.vel.x * p2.mass) / (p1.mass + p2.mass);
-        var vy = (p1.state.vel.y * p1.mass + p2.state.vel.y * p2.mass) / (p1.mass + p2.mass);
-        p1.mass += p2.mass;
-        p1.radius = p1.getRadiusFromMass(p1.mass);
-        p1.state.vel.x = vx;
-        p1.state.vel.y = vy;
+        pS.merged = true;
+        var vx = (pL.state.vel.x * pL.mass + pS.state.vel.x * pS.mass) / (pL.mass + pS.mass);
+        var vy = (pL.state.vel.y * pL.mass + pS.state.vel.y * pS.mass) / (pL.mass + pS.mass);
+        pL.mass += pS.mass;
+        pL.radius = pL.getRadiusFromMass(pL.mass);
+        pL.state.vel.x = vx;
+        pL.state.vel.y = vy;
       }
     }
   }

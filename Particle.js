@@ -26,7 +26,7 @@ Particle.prototype.acceleration = function (out, state, particles) {
   for (var i = 0; i < particles.length; i++) {
     var p = particles[i];
 
-    if (p == this || p.merged) {
+    if (this === p || this.merged || p.merged) {
       continue;
     }
 
