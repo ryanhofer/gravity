@@ -54,22 +54,22 @@ Planet.prototype.getRadiusFromMass = function(m) {
 };
 
 Planet.prototype.acceleration = function(out, state, planets) {
-  let ax = 0.0;
-  let ay = 0.0;
+  var ax = 0.0;
+  var ay = 0.0;
 
-  for (let i = 0; i < planets.length; i++) {
-    let p = planets[i];
+  for (var i = 0; i < planets.length; i++) {
+    var p = planets[i];
 
     if (p == this || p.merged) {
       continue;
     }
 
-    let dx = p.state.x - state.x;
-    let dy = p.state.y - state.y;
-    let d2 = dx * dx + dy * dy;
-    let d = Math.sqrt(d2);
+    var dx = p.state.x - state.x;
+    var dy = p.state.y - state.y;
+    var d2 = dx * dx + dy * dy;
+    var d = Math.sqrt(d2);
 
-    let force = d2 > 1e-10 ? this.mass * p.mass * this.GRAVITY / d2 : 0;
+    var force = d2 > 1e-10 ? this.mass * p.mass * this.GRAVITY / d2 : 0;
 
     ax += (force / this.mass) * dx / d;
     ay += (force / this.mass) * dy / d;
@@ -86,7 +86,7 @@ Planet.prototype.initRK4 = function(out, planets) {
 };
 
 Planet.prototype.evalRK4 = function(out, planets, deriv, dt) {
-  let st = new State(this.state.x + deriv.dx * dt,
+  var st = new State(this.state.x + deriv.dx * dt,
                      this.state.y + deriv.dy * dt,
                      this.state.vx + deriv.dvx * dt,
                      this.state.vy + deriv.dvy * dt);
@@ -96,20 +96,20 @@ Planet.prototype.evalRK4 = function(out, planets, deriv, dt) {
 };
 
 Planet.prototype.update = function(planets, dt) {
-  let a = new Derivative(0.0,0.0,0.0,0.0);
-  let b = new Derivative(0.0,0.0,0.0,0.0);
-  let c = new Derivative(0.0,0.0,0.0,0.0);
-  let d = new Derivative(0.0,0.0,0.0,0.0);
+  var a = new Derivative(0.0,0.0,0.0,0.0);
+  var b = new Derivative(0.0,0.0,0.0,0.0);
+  var c = new Derivative(0.0,0.0,0.0,0.0);
+  var d = new Derivative(0.0,0.0,0.0,0.0);
 
   this.initRK4(a, planets);
   this.evalRK4(b, planets, a, dt * 0.5);
   this.evalRK4(c, planets, b, dt * 0.5);
   this.evalRK4(d, planets, c, dt);
 
-  let dxdt = (a.dx + 2.0 * (b.dx + c.dx) + d.dx) / 6.0;
-  let dydt = (a.dy + 2.0 * (b.dy + c.dy) + d.dy) / 6.0;
-  let dvxdt = (a.dvx + 2.0 * (b.dvx + c.dvx) + d.dvx) / 6.0;
-  let dvydt = (a.dvy + 2.0 * (b.dvy + c.dvy) + d.dvy) / 6.0;
+  var dxdt = (a.dx + 2.0 * (b.dx + c.dx) + d.dx) / 6.0;
+  var dydt = (a.dy + 2.0 * (b.dy + c.dy) + d.dy) / 6.0;
+  var dvxdt = (a.dvx + 2.0 * (b.dvx + c.dvx) + d.dvx) / 6.0;
+  var dvydt = (a.dvy + 2.0 * (b.dvy + c.dvy) + d.dvy) / 6.0;
 
   this.nextState.set(
     this.state.x + dxdt * dt,

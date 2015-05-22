@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
   var planets = getStartingPlanets();
 
   var rafCallback = function(timestamp) {
-    let deltaTime = timestamp - prevTime;
+    var deltaTime = timestamp - prevTime;
     tick(planets, deltaTime);
     prevTime = timestamp;
     window.requestAnimationFrame(rafCallback);
@@ -131,15 +131,15 @@ function tick(planets, deltaTime) {
 
   draw(planets);
 
-  for (let i = 0; i < planets.length; i++) {
-    let p1 = planets[i];
+  for (var i = 0; i < planets.length; i++) {
+    var p1 = planets[i];
 
     if (p1.merged) {
       continue;
     }
 
-    for (let j = 0; j < planets.length; j++) {
-      let p2 = planets[j];
+    for (var j = 0; j < planets.length; j++) {
+      var p2 = planets[j];
 
       if (p1 == p2 || p2.merged) {
         continue;
@@ -147,13 +147,13 @@ function tick(planets, deltaTime) {
 
       if (p1.colliding(p2)) {
         if (p2.mass > p1.mass) {
-          let pt = p1;
+          var pt = p1;
           p1 = p2;
           p2 = pt;
         }
         p2.merged = true;
-        let vx = (p1.state.vx * p1.mass + p2.state.vx * p2.mass) / (p1.mass + p2.mass);
-        let vy = (p1.state.vy * p1.mass + p2.state.vy * p2.mass) / (p1.mass + p2.mass);
+        var vx = (p1.state.vx * p1.mass + p2.state.vx * p2.mass) / (p1.mass + p2.mass);
+        var vy = (p1.state.vy * p1.mass + p2.state.vy * p2.mass) / (p1.mass + p2.mass);
         p1.mass += p2.mass;
         p1.radius = p1.getRadiusFromMass(p1.mass);
         p1.state.vx = vx;
@@ -162,8 +162,8 @@ function tick(planets, deltaTime) {
     }
   }
 
-  for (let i = 0; i < planets.length; i++) {
-    let p = planets[i];
+  for (var i = 0; i < planets.length; i++) {
+    var p = planets[i];
 
     if (p.merged || outOfBounds(p)) {
       planets.splice(i, 1);
@@ -173,7 +173,7 @@ function tick(planets, deltaTime) {
     p.update(planets, deltaTime);
   }
 
-  for (let i = 0; i < planets.length; i++) {
+  for (var i = 0; i < planets.length; i++) {
     planets[i].move();
   }
 }
@@ -208,7 +208,7 @@ function draw(planets) {
     }
 
     ctx.beginPath();
-    let drawRadius = Math.max(p.radius, 1.0);
+    var drawRadius = Math.max(p.radius, 1.0);
     ctx.arc(p.state.x, p.state.y, drawRadius, 0, 2.0*Math.PI, false);
     ctx.fill();
   }
