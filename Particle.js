@@ -1,8 +1,8 @@
 'use strict';
 
-function Particle(r, x, y, vx, vy) {
-  this.state = new ParticleState(x, y, vx, vy);
-  this.nextState = new ParticleState(x, y, vx, vy);
+function Particle(r, px, py, vx, vy) {
+  this.state = new ParticleState(px, py, vx, vy);
+  this.nextState = new ParticleState(px, py, vx, vy);
   this.radius = r;
   this.mass = this.getMassFromRadius(r);
   this.merged = false;
@@ -30,8 +30,8 @@ Particle.prototype.acceleration = function(out, state, particles) {
       continue;
     }
 
-    var dx = p.state.x - state.x;
-    var dy = p.state.y - state.y;
+    var dx = p.state.pos.x - state.pos.x;
+    var dy = p.state.pos.y - state.pos.y;
     var d2 = dx * dx + dy * dy;
     var d = Math.sqrt(d2);
 
@@ -41,47 +41,49 @@ Particle.prototype.acceleration = function(out, state, particles) {
     ay += (force / this.mass) * dy / d;
   }
 
-  out.dvx = ax;
-  out.dvy = ay;
+  out.vel.x = ax;
+  out.vel.y = ay;
 };
 
 Particle.prototype.initRK4 = function(out, particles) {
-  out.dx = this.state.vx;
-  out.dy = this.state.vy;
+  out.pos.x = this.state.vel.x;
+  out.pos.y = this.state.vel.y;
   this.acceleration(out, this.state, particles);
 };
 
 Particle.prototype.evalRK4 = function(out, particles, deriv, dt) {
-  var st = new ParticleState(this.state.x + deriv.dx * dt,
-                     this.state.y + deriv.dy * dt,
-                     this.state.vx + deriv.dvx * dt,
-                     this.state.vy + deriv.dvy * dt);
-  out.dx = st.vx;
-  out.dy = st.vy;
+  var st = new ParticleState(
+    this.state.pos.x + deriv.pos.x * dt,
+    this.state.pos.y + deriv.pos.y * dt,
+    this.state.vel.x + deriv.vel.x * dt,
+    this.state.vel.y + deriv.vel.y * dt
+  );
+  out.pos.x = st.vel.x;
+  out.pos.y = st.vel.y;
   this.acceleration(out, st, particles);
 };
 
 Particle.prototype.update = function(particles, dt) {
-  var a = new Derivative(0.0,0.0,0.0,0.0);
-  var b = new Derivative(0.0,0.0,0.0,0.0);
-  var c = new Derivative(0.0,0.0,0.0,0.0);
-  var d = new Derivative(0.0,0.0,0.0,0.0);
+  var a = new ParticleState(0.0,0.0,0.0,0.0);
+  var b = new ParticleState(0.0,0.0,0.0,0.0);
+  var c = new ParticleState(0.0,0.0,0.0,0.0);
+  var d = new ParticleState(0.0,0.0,0.0,0.0);
 
   this.initRK4(a, particles);
   this.evalRK4(b, particles, a, dt * 0.5);
   this.evalRK4(c, particles, b, dt * 0.5);
   this.evalRK4(d, particles, c, dt);
 
-  var dxdt = (a.dx + 2.0 * (b.dx + c.dx) + d.dx) / 6.0;
-  var dydt = (a.dy + 2.0 * (b.dy + c.dy) + d.dy) / 6.0;
-  var dvxdt = (a.dvx + 2.0 * (b.dvx + c.dvx) + d.dvx) / 6.0;
-  var dvydt = (a.dvy + 2.0 * (b.dvy + c.dvy) + d.dvy) / 6.0;
+  var dxdt = (a.pos.x + 2.0 * (b.pos.x + c.pos.x) + d.pos.x) / 6.0;
+  var dydt = (a.pos.y + 2.0 * (b.pos.y + c.pos.y) + d.pos.y) / 6.0;
+  var dvxdt = (a.vel.x + 2.0 * (b.vel.x + c.vel.x) + d.vel.x) / 6.0;
+  var dvydt = (a.vel.y + 2.0 * (b.vel.y + c.vel.y) + d.vel.y) / 6.0;
 
   this.nextState.set(
-    this.state.x + dxdt * dt,
-    this.state.y + dydt * dt,
-    this.state.vx + dvxdt * dt,
-    this.state.vy + dvydt * dt
+    this.state.pos.x + dxdt * dt,
+    this.state.pos.y + dydt * dt,
+    this.state.vel.x + dvxdt * dt,
+    this.state.vel.y + dvydt * dt
   );
 };
 
@@ -92,8 +94,8 @@ Particle.prototype.move = function() {
 Particle.prototype.colliding = function(p) {
   var dx, dy, d2, d;
 
-  dx = p.state.x - this.state.x;
-  dy = p.state.y - this.state.y;
+  dx = p.state.pos.x - this.state.pos.x;
+  dy = p.state.pos.y - this.state.pos.y;
   d2 = dx * dx + dy * dy;
   d = Math.sqrt(d2);
 

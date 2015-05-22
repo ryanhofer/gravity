@@ -1,22 +1,16 @@
 'use strict';
 
-function ParticleState(x, y, vx, vy) {
-  this.x = x;
-  this.y = y;
-  this.vx = vx;
-  this.vy = vy;
+function ParticleState(px, py, vx, vy) {
+  this.pos = new Vec2(px, py);
+  this.vel = new Vec2(vx, vy);
 }
 
 ParticleState.prototype.setv = function(other) {
-  this.x = other.x;
-  this.y = other.y;
-  this.vx = other.vx;
-  this.vy = other.vy;
+  this.pos.setv(other.pos);
+  this.vel.setv(other.vel);
 }
 
-ParticleState.prototype.set = function(x, y, vx, vy) {
-  this.x = x;
-  this.y = y;
-  this.vx = vx;
-  this.vy = vy;
+ParticleState.prototype.set = function(px, py, vx, vy) {
+  this.pos.set(px, py);
+  this.vel.set(vx, vy);
 }

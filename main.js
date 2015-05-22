@@ -197,7 +197,7 @@ function draw(particles) {
 
     context.beginPath();
     var drawRadius = Math.max(p.radius, 1.0);
-    context.arc(p.state.x, p.state.y, drawRadius, 0, 2.0*Math.PI, false);
+    context.arc(p.state.pos.x, p.state.pos.y, drawRadius, 0, 2.0*Math.PI, false);
     context.fill();
   }
 }
