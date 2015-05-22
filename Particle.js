@@ -1,8 +1,8 @@
 'use strict';
 
 function Particle(r, x, y, vx, vy) {
-  this.state = new State(x, y, vx, vy);
-  this.nextState = new State(x, y, vx, vy);
+  this.state = new ParticleState(x, y, vx, vy);
+  this.nextState = new ParticleState(x, y, vx, vy);
   this.radius = r;
   this.mass = this.getMassFromRadius(r);
   this.merged = false;
@@ -52,7 +52,7 @@ Particle.prototype.initRK4 = function(out, particles) {
 };
 
 Particle.prototype.evalRK4 = function(out, particles, deriv, dt) {
-  var st = new State(this.state.x + deriv.dx * dt,
+  var st = new ParticleState(this.state.x + deriv.dx * dt,
                      this.state.y + deriv.dy * dt,
                      this.state.vx + deriv.dvx * dt,
                      this.state.vy + deriv.dvy * dt);
