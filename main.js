@@ -3,7 +3,6 @@
 var TIMESTEP = 20;
 var CREATE_RADIUS_INIT = 0.5;
 var CREATE_RADIUS_INCR = 0.1;
-var BOUND_MARGIN = 1000.0;
 
 var KEY_SPACEBAR = 32;
 
@@ -119,11 +118,6 @@ function getStartingPlanets() {
   return planets;
 }
 
-function outOfBounds(p) {
-  return p.state.x < -BOUND_MARGIN || p.state.x > canvas.width + BOUND_MARGIN ||
-         p.state.y < -BOUND_MARGIN || p.state.y > canvas.height + BOUND_MARGIN;
-}
-
 function tick(planets, deltaTime) {
   if (createHolding) {
     createRadius += CREATE_RADIUS_INCR;
@@ -165,7 +159,7 @@ function tick(planets, deltaTime) {
   for (var i = 0; i < planets.length; i++) {
     var p = planets[i];
 
-    if (p.merged || outOfBounds(p)) {
+    if (p.merged) {
       planets.splice(i, 1);
       continue;
     }
