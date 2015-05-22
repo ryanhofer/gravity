@@ -14,7 +14,7 @@ var mouse = new Vec2(0, 0);
 var createRadius = CREATE_RADIUS_INIT;
 var createHolding = false;
 
-document.addEventListener('DOMContentLoaded', function(e) {
+document.addEventListener('DOMContentLoaded', function (e) {
   canvas = document.getElementById('sol-canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -22,74 +22,74 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
   var particles = getStartingParticles();
 
-  var rafCallback = function(timestamp) {
+  var rafCallback = function (timestamp) {
     var deltaTime = timestamp - prevTime;
     tick(particles, deltaTime);
     prevTime = timestamp;
     window.requestAnimationFrame(rafCallback);
   }
 
-  document.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', function (e) {
     if (e.which == KEY_SPACEBAR) {
       particles = getStartingParticles();
     }
   });
 
-  window.addEventListener('resize', function(e) {
+  window.addEventListener('resize', function (e) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   });
 
-  var createStart = function() {
+  var createStart = function () {
     createHolding = true;
     createRadius = CREATE_RADIUS_INIT;
   }
 
-  var createFinish = function() {
+  var createFinish = function () {
     if (createHolding) {
       particles.push(new Particle(createRadius, mouse.x, mouse.y, 0.0, 0.0));
       createHolding = false;
     }
   }
 
-  var createCancel = function() {
+  var createCancel = function () {
     createHolding = false;
   }
 
-  canvas.addEventListener('mousemove', function(e) {
+  canvas.addEventListener('mousemove', function (e) {
     mouse.set(e.pageX, e.pageY);
   });
 
-  canvas.addEventListener('mousedown', function(e) {
+  canvas.addEventListener('mousedown', function (e) {
     createStart();
   });
 
-  canvas.addEventListener('mouseup', function(e) {
+  canvas.addEventListener('mouseup', function (e) {
     createFinish();
   });
 
-  canvas.addEventListener('mouseleave', function(e) {
+  canvas.addEventListener('mouseleave', function (e) {
     createCancel();
   });
   
-  canvas.addEventListener('touchmove', function(e) {
+  canvas.addEventListener('touchmove', function (e) {
     e.preventDefault();
     mouse.set(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
   });
 
-  canvas.addEventListener('touchstart', function(e) {
+  canvas.addEventListener('touchstart', function (e) {
     e.preventDefault();
     mouse.set(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
     createStart();
   });
 
-  canvas.addEventListener('touchend', function(e) {
+  canvas.addEventListener('touchend', function (e) {
     e.preventDefault();
     mouse.set(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
     createFinish();
   });
 
-  canvas.addEventListener('touchcancel', function(e) {
+  canvas.addEventListener('touchcancel', function (e) {
     createCancel();
   });
 

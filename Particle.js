@@ -1,6 +1,6 @@
 'use strict';
 
-var Particle = function(r, px, py, vx, vy) {
+var Particle = function (r, px, py, vx, vy) {
   this.state = new ParticleState(px, py, vx, vy);
   this.nextState = new ParticleState(px, py, vx, vy);
   this.radius = r;
@@ -11,15 +11,15 @@ var Particle = function(r, px, py, vx, vy) {
 Particle.prototype.GRAVITY = 1e-4;
 Particle.prototype.DENSITY = 1.0
 
-Particle.prototype.getMassFromRadius = function(r) {
+Particle.prototype.getMassFromRadius = function (r) {
   return this.DENSITY * Math.PI * Math.pow(this.radius, 3.0) * (4.0 / 3.0);
 };
 
-Particle.prototype.getRadiusFromMass = function(m) {
+Particle.prototype.getRadiusFromMass = function (m) {
   return Math.pow(this.mass * 0.75 / (this.DENSITY * Math.PI), 1.0 / 3.0);
 };
 
-Particle.prototype.acceleration = function(out, state, particles) {
+Particle.prototype.acceleration = function (out, state, particles) {
   var ax = 0.0;
   var ay = 0.0;
 
@@ -45,13 +45,13 @@ Particle.prototype.acceleration = function(out, state, particles) {
   out.vel.y = ay;
 };
 
-Particle.prototype.initRK4 = function(out, particles) {
+Particle.prototype.initRK4 = function (out, particles) {
   out.pos.x = this.state.vel.x;
   out.pos.y = this.state.vel.y;
   this.acceleration(out, this.state, particles);
 };
 
-Particle.prototype.evalRK4 = function(out, particles, deriv, dt) {
+Particle.prototype.evalRK4 = function (out, particles, deriv, dt) {
   var st = new ParticleState(
     this.state.pos.x + deriv.pos.x * dt,
     this.state.pos.y + deriv.pos.y * dt,
@@ -63,7 +63,7 @@ Particle.prototype.evalRK4 = function(out, particles, deriv, dt) {
   this.acceleration(out, st, particles);
 };
 
-Particle.prototype.update = function(particles, dt) {
+Particle.prototype.update = function (particles, dt) {
   var a = new ParticleState(0.0,0.0,0.0,0.0);
   var b = new ParticleState(0.0,0.0,0.0,0.0);
   var c = new ParticleState(0.0,0.0,0.0,0.0);
@@ -87,11 +87,11 @@ Particle.prototype.update = function(particles, dt) {
   );
 };
 
-Particle.prototype.move = function() {
+Particle.prototype.move = function () {
   this.state.setv(this.nextState);
 };
 
-Particle.prototype.colliding = function(p) {
+Particle.prototype.colliding = function (p) {
   var dx, dy, d2, d;
 
   dx = p.state.pos.x - this.state.pos.x;
