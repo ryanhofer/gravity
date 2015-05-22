@@ -20,18 +20,18 @@ document.addEventListener('DOMContentLoaded', function(e) {
   canvas.height = window.innerHeight;
   context = canvas.getContext('2d');
 
-  var planets = getStartingPlanets();
+  var particles = getStartingParticles();
 
   var rafCallback = function(timestamp) {
     var deltaTime = timestamp - prevTime;
-    tick(planets, deltaTime);
+    tick(particles, deltaTime);
     prevTime = timestamp;
     window.requestAnimationFrame(rafCallback);
   }
 
   document.addEventListener('keydown', function(e) {
     if (e.which == KEY_SPACEBAR) {
-      planets = getStartingPlanets();
+      particles = getStartingParticles();
     }
   });
 
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
   var createFinish = function() {
     if (createHolding) {
-      planets.push(new Planet(createRadius, mouse.x, mouse.y, 0.0, 0.0));
+      particles.push(new Particle(createRadius, mouse.x, mouse.y, 0.0, 0.0));
       createHolding = false;
     }
   }
@@ -97,9 +97,9 @@ document.addEventListener('DOMContentLoaded', function(e) {
   window.requestAnimationFrame(rafCallback);
 });
 
-function getStartingPlanets() {
+function getStartingParticles() {
   var N_PLANETS = 400;
-  var planets = new Array(N_PLANETS);
+  var particles = new Array(N_PLANETS);
   for (var i = 0; i < N_PLANETS; i++) {
     var r = Math.log(1.0 + Math.random() * 400.0);
     var x = Math.random() * canvas.width;
@@ -108,27 +108,27 @@ function getStartingPlanets() {
     var dir = Math.random() * 2 * Math.PI;
     var vx = vel * Math.cos(dir);
     var vy = vel * Math.sin(dir);
-    planets[i] = new Planet(r, x, y, vx, vy);
+    particles[i] = new Particle(r, x, y, vx, vy);
   }
-  return planets;
+  return particles;
 }
 
-function tick(planets, deltaTime) {
+function tick(particles, deltaTime) {
   if (createHolding) {
     createRadius += CREATE_RADIUS_INCR;
   }
 
-  draw(planets);
+  draw(particles);
 
-  for (var i = 0; i < planets.length; i++) {
-    var p1 = planets[i];
+  for (var i = 0; i < particles.length; i++) {
+    var p1 = particles[i];
 
     if (p1.merged) {
       continue;
     }
 
-    for (var j = 0; j < planets.length; j++) {
-      var p2 = planets[j];
+    for (var j = 0; j < particles.length; j++) {
+      var p2 = particles[j];
 
       if (p1 == p2 || p2.merged) {
         continue;
@@ -151,26 +151,26 @@ function tick(planets, deltaTime) {
     }
   }
 
-  for (var i = 0; i < planets.length; i++) {
-    var p = planets[i];
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
 
     if (p.merged) {
-      planets.splice(i, 1);
+      particles.splice(i, 1);
       continue;
     }
 
-    p.update(planets, deltaTime);
+    p.update(particles, deltaTime);
   }
 
-  for (var i = 0; i < planets.length; i++) {
-    planets[i].move();
+  for (var i = 0; i < particles.length; i++) {
+    particles[i].move();
   }
 }
 
-function draw(planets) {
+function draw(particles) {
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  // planet creation UI
+  // particle creation UI
   if (createHolding) {
     context.strokeStyle = 'rgba(255,0,0,0.5)';
     context.beginPath();
@@ -188,8 +188,8 @@ function draw(planets) {
   }
 
   context.fillStyle = 'black';
-  for (var i = 0; i < planets.length; i++) {
-    var p = planets[i];
+  for (var i = 0; i < particles.length; i++) {
+    var p = particles[i];
 
     if (p.merged) {
       continue;
