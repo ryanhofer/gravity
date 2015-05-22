@@ -189,12 +189,6 @@ function draw(planets) {
 
   // planet creation UI
   if (createHolding) {
-    // outline of new planet
-    // ctx.strokeStyle = 'grey';
-    // ctx.beginPath();
-    // ctx.arc(mouseX, mouseY, createRadius, 0, 2.0*Math.PI, false);
-    // ctx.stroke();
-    // axial lines (clearer for touch devices)
     ctx.strokeStyle = 'rgba(255,0,0,0.5)';
     ctx.beginPath();
     // vertical lines
