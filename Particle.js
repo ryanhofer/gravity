@@ -1,12 +1,12 @@
 'use strict';
 
-function Particle(r, px, py, vx, vy) {
+var Particle = function(r, px, py, vx, vy) {
   this.state = new ParticleState(px, py, vx, vy);
   this.nextState = new ParticleState(px, py, vx, vy);
   this.radius = r;
   this.mass = this.getMassFromRadius(r);
   this.merged = false;
-}
+};
 
 Particle.prototype.GRAVITY = 1e-4;
 Particle.prototype.DENSITY = 1.0
@@ -89,7 +89,7 @@ Particle.prototype.update = function(particles, dt) {
 
 Particle.prototype.move = function() {
   this.state.setv(this.nextState);
-}
+};
 
 Particle.prototype.colliding = function(p) {
   var dx, dy, d2, d;
@@ -100,4 +100,4 @@ Particle.prototype.colliding = function(p) {
   d = Math.sqrt(d2);
 
   return d <= this.radius + p.radius;
-}
+};
