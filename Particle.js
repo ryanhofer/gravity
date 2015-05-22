@@ -86,7 +86,9 @@ Particle.prototype.update = function(particles, dt) {
 };
 
 Particle.prototype.move = function() {
-  this.state.setv(this.nextState);
+  var temp = this.state;
+  this.state = this.nextState;
+  this.nextState = temp;
 }
 
 Particle.prototype.colliding = function(p) {
