@@ -10,7 +10,7 @@ var canvas, ctx;
 
 var prevTime = window.performance.now();
 
-var mouseX = 0, mouseY = 0;
+var mouse = new Vec2(0, 0);
 
 var createRadius = CREATE_RADIUS_INIT;
 var createHolding = false;
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
 
   var createFinish = function() {
     if (createHolding) {
-      planets.push(new Planet(createRadius, mouseX, mouseY, 0.0, 0.0));
+      planets.push(new Planet(createRadius, mouse.x, mouse.y, 0.0, 0.0));
       createHolding = false;
     }
   }
@@ -58,8 +58,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 
   canvas.addEventListener('mousemove', function(e) {
-    mouseX = e.pageX;
-    mouseY = e.pageY;
+    mouse.set(e.pageX, e.pageY);
   });
 
   canvas.addEventListener('mousedown', function(e) {
@@ -76,21 +75,18 @@ document.addEventListener('DOMContentLoaded', function(e) {
   
   canvas.addEventListener('touchmove', function(e) {
     e.preventDefault();
-    mouseX = e.changedTouches[0].pageX;
-    mouseY = e.changedTouches[0].pageY;
+    mouse.set(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
   });
 
   canvas.addEventListener('touchstart', function(e) {
     e.preventDefault();
-    mouseX = e.changedTouches[0].pageX;
-    mouseY = e.changedTouches[0].pageY;
+    mouse.set(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
     createStart();
   });
 
   canvas.addEventListener('touchend', function(e) {
     e.preventDefault();
-    mouseX = e.changedTouches[0].pageX;
-    mouseY = e.changedTouches[0].pageY;
+    mouse.set(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
     createFinish();
   });
 
@@ -181,15 +177,15 @@ function draw(planets) {
     ctx.strokeStyle = 'rgba(255,0,0,0.5)';
     ctx.beginPath();
     // vertical lines
-    ctx.moveTo(mouseX - createRadius, 0);
-    ctx.lineTo(mouseX - createRadius, canvas.height);
-    ctx.moveTo(mouseX + createRadius, 0);
-    ctx.lineTo(mouseX + createRadius, canvas.height);
+    ctx.moveTo(mouse.x - createRadius, 0);
+    ctx.lineTo(mouse.x - createRadius, canvas.height);
+    ctx.moveTo(mouse.x + createRadius, 0);
+    ctx.lineTo(mouse.x + createRadius, canvas.height);
     // horizontal lines
-    ctx.moveTo(0,            mouseY - createRadius);
-    ctx.lineTo(canvas.width, mouseY - createRadius);
-    ctx.moveTo(0,            mouseY + createRadius);
-    ctx.lineTo(canvas.width, mouseY + createRadius);
+    ctx.moveTo(0,            mouse.y - createRadius);
+    ctx.lineTo(canvas.width, mouse.y - createRadius);
+    ctx.moveTo(0,            mouse.y + createRadius);
+    ctx.lineTo(canvas.width, mouse.y + createRadius);
     ctx.stroke();
   }
 
