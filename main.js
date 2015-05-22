@@ -1,12 +1,11 @@
 'use strict';
 
-var TIMESTEP = 20;
 var CREATE_RADIUS_INIT = 0.5;
 var CREATE_RADIUS_INCR = 0.1;
 
 var KEY_SPACEBAR = 32;
 
-var canvas, ctx;
+var canvas, context;
 
 var prevTime = window.performance.now();
 
@@ -19,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
   canvas = document.getElementById('sol-canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  ctx = canvas.getContext('2d');
+  context = canvas.getContext('2d');
 
   var planets = getStartingPlanets();
 
@@ -169,27 +168,26 @@ function tick(planets, deltaTime) {
 }
 
 function draw(planets) {
-  //ctx.fillStyle = 'white';
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
   // planet creation UI
   if (createHolding) {
-    ctx.strokeStyle = 'rgba(255,0,0,0.5)';
-    ctx.beginPath();
+    context.strokeStyle = 'rgba(255,0,0,0.5)';
+    context.beginPath();
     // vertical lines
-    ctx.moveTo(mouse.x - createRadius, 0);
-    ctx.lineTo(mouse.x - createRadius, canvas.height);
-    ctx.moveTo(mouse.x + createRadius, 0);
-    ctx.lineTo(mouse.x + createRadius, canvas.height);
+    context.moveTo(mouse.x - createRadius, 0);
+    context.lineTo(mouse.x - createRadius, canvas.height);
+    context.moveTo(mouse.x + createRadius, 0);
+    context.lineTo(mouse.x + createRadius, canvas.height);
     // horizontal lines
-    ctx.moveTo(0,            mouse.y - createRadius);
-    ctx.lineTo(canvas.width, mouse.y - createRadius);
-    ctx.moveTo(0,            mouse.y + createRadius);
-    ctx.lineTo(canvas.width, mouse.y + createRadius);
-    ctx.stroke();
+    context.moveTo(0,            mouse.y - createRadius);
+    context.lineTo(canvas.width, mouse.y - createRadius);
+    context.moveTo(0,            mouse.y + createRadius);
+    context.lineTo(canvas.width, mouse.y + createRadius);
+    context.stroke();
   }
 
-  ctx.fillStyle = 'black';
+  context.fillStyle = 'black';
   for (var p, i = 0; i < planets.length; i++) {
     p = planets[i];
 
@@ -197,9 +195,9 @@ function draw(planets) {
       continue;
     }
 
-    ctx.beginPath();
+    context.beginPath();
     var drawRadius = Math.max(p.radius, 1.0);
-    ctx.arc(p.state.x, p.state.y, drawRadius, 0, 2.0*Math.PI, false);
-    ctx.fill();
+    context.arc(p.state.x, p.state.y, drawRadius, 0, 2.0*Math.PI, false);
+    context.fill();
   }
 }
