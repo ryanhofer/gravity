@@ -141,12 +141,12 @@ function tick(particles, deltaTime) {
           p2 = pt;
         }
         p2.merged = true;
-        var vx = (p1.state.vx * p1.mass + p2.state.vx * p2.mass) / (p1.mass + p2.mass);
-        var vy = (p1.state.vy * p1.mass + p2.state.vy * p2.mass) / (p1.mass + p2.mass);
+        var vx = (p1.state.vel.x * p1.mass + p2.state.vel.x * p2.mass) / (p1.mass + p2.mass);
+        var vy = (p1.state.vel.y * p1.mass + p2.state.vel.y * p2.mass) / (p1.mass + p2.mass);
         p1.mass += p2.mass;
         p1.radius = p1.getRadiusFromMass(p1.mass);
-        p1.state.vx = vx;
-        p1.state.vy = vy;
+        p1.state.vel.x = vx;
+        p1.state.vel.y = vy;
       }
     }
   }
