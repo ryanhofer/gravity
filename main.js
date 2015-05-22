@@ -188,8 +188,8 @@ function draw(planets) {
   }
 
   context.fillStyle = 'black';
-  for (var p, i = 0; i < planets.length; i++) {
-    p = planets[i];
+  for (var i = 0; i < planets.length; i++) {
+    var p = planets[i];
 
     if (p.merged) {
       continue;
