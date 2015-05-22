@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', function(e) {
 });
 
 function getStartingPlanets() {
-  var ASTEROID_RES_X = 150.0;
-  var ASTEROID_RES_Y = 150.0;
+  var ASTEROID_RES_X = 50.0;
+  var ASTEROID_RES_Y = 50.0;
   var planets = [];
   planets.push(new Planet(10.0, canvas.width/2+100, canvas.height/2-110, -0.05, 0.0));
   planets.push(new Planet(10.0, canvas.width/2-100, canvas.height/2+110, 0.05, 0.0));
