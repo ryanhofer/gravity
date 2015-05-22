@@ -104,20 +104,17 @@ document.addEventListener('DOMContentLoaded', function(e) {
 });
 
 function getStartingPlanets() {
-  var ASTEROID_RES_X = 50.0;
-  var ASTEROID_RES_Y = 50.0;
-  var planets = [];
-  planets.push(new Planet(10.0, canvas.width/2+100, canvas.height/2-110, -0.05, 0.0));
-  planets.push(new Planet(10.0, canvas.width/2-100, canvas.height/2+110, 0.05, 0.0));
-  planets.push(new Planet(10.0, canvas.width/2, canvas.height/2, 0, 0));
-  for (var x = 0; x < canvas.width / ASTEROID_RES_X; x++) {
-    for (var y = 0; y < canvas.height / ASTEROID_RES_Y; y++) {
-      planets.push(new Planet(
-        0.2,
-        x*ASTEROID_RES_X + 0.5*(canvas.width - ASTEROID_RES_X*Math.floor(canvas.width/ASTEROID_RES_X)),
-        y*ASTEROID_RES_Y + 0.5*(canvas.height - ASTEROID_RES_Y*Math.floor(canvas.height/ASTEROID_RES_Y)),
-        0.0, 0.0));
-    }
+  var N_PLANETS = 400;
+  var planets = new Array(N_PLANETS);
+  for (var i = 0; i < N_PLANETS; i++) {
+    var r = Math.log(1.0 + Math.random() * 400.0);
+    var x = Math.random() * canvas.width;
+    var y = Math.random() * canvas.height;
+    var vel = Math.random() / 5.0;
+    var dir = Math.random() * 2 * Math.PI;
+    var vx = vel * Math.cos(dir);
+    var vy = vel * Math.sin(dir);
+    planets[i] = new Planet(r, x, y, vx, vy);
   }
   return planets;
 }
