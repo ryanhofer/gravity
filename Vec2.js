@@ -24,3 +24,8 @@ Vec2.prototype.add = function (x, y) {
   this.x += x;
   this.y += y;
 };
+
+Vec2.prototype.mult = function (s) {
+  this.x *= s;
+  this.y *= s;
+};
