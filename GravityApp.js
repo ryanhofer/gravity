@@ -8,7 +8,6 @@ var GravityApp = function (canvas) {
   this.mouse = new Vec2(0, 0);
   this.particleSystem = new ParticleSystem();
 
-  this.particleSystem.randomize(new Vec2(1000, 1000));
   this.resizeCanvas();
 
   window.addEventListener('resize', (function (e) {
@@ -23,6 +22,10 @@ var GravityApp = function (canvas) {
 
 GravityApp.prototype.run = function () {
   this.currentTime = window.performance.now();
+
+  // Initialize components
+  this.particleSystem.init();
+
   window.requestAnimationFrame(this.prepareFrame.bind(this));
 };
 
@@ -41,6 +44,7 @@ GravityApp.prototype.prepareFrame = function (timestamp) {
 };
 
 GravityApp.prototype.update = function (deltaTime) {
+  // Update components
   this.particleSystem.update(deltaTime);
 };
 
@@ -52,6 +56,7 @@ GravityApp.prototype.render = function () {
   gl.translate(this.canvas.width/2, this.canvas.height/2);
   //TODO: view transformation
 
+  // Draw components
   this.particleSystem.draw(gl);
 
   gl.restore();

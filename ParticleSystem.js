@@ -6,8 +6,13 @@ var ParticleSystem = function () {
 
 // Number of particles to generate when initialized
 ParticleSystem.prototype.N_PARTICLES = 400;
+// Default area size for random particles
+ParticleSystem.prototype.RANDOM_BOUNDS = new Vec2(1000, 1000);
 
-// Generate a random particle field
+ParticleSystem.prototype.init = function () {
+  this.randomize(this.RANDOM_BOUNDS);
+};
+
 ParticleSystem.prototype.randomize = function (bounds) {
   this.particles = new Array(this.N_PARTICLES);
   for (var i = 0; i < this.N_PARTICLES; i++) {
