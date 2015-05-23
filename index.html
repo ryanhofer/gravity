@@ -5,15 +5,29 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	<style>
-		body, html { padding: 0; margin: 0; }
-		#sol-canvas { display: block; }
+		html, body {
+			padding: 0;
+			margin: 0;
+		}
+		#app-canvas {
+			display: block;
+		}
 	</style>
 	<script src="Vec2.js"></script>
 	<script src="ParticleState.js"></script>
 	<script src="Particle.js"></script>
-	<script src="main.js"></script>
+	<script src="ParticleSystem.js"></script>
+	<script src="GravityApp.js"></script>
+	<script>
+		'use strict';
+		document.addEventListener('DOMContentLoaded', function (e) {
+		  (new GravityApp(document.getElementById('app-canvas'))).run();
+		});
+	</script>
 </head>
 <body>
-	<canvas id="sol-canvas"></canvas>
+	<canvas id="app-canvas">
+		<p>Your browser doesn’t support the &lt;canvas&gt; element.</p>
+	</canvas>
 </body>
 </html>
