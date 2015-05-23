@@ -63,7 +63,7 @@ Particle.prototype.evalRK4 = function (out, particles, deriv, dt) {
   this.acceleration(out, st, particles);
 };
 
-Particle.prototype.update = function (particles, dt) {
+Particle.prototype.computeNextState = function (particles, dt) {
   var a = new ParticleState(0.0,0.0,0.0,0.0);
   var b = new ParticleState(0.0,0.0,0.0,0.0);
   var c = new ParticleState(0.0,0.0,0.0,0.0);

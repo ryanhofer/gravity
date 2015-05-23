@@ -43,7 +43,7 @@ ParticleSystem.prototype.draw = function (gl) {
 
 ParticleSystem.prototype.updateParticles = function (deltaTime) {
   for (var i = 0; i < this.particles.length; i++) {
-    this.particles[i].update(this.particles, deltaTime);
+    this.particles[i].computeNextState(this.particles, deltaTime);
   }
   for (var i = 0; i < this.particles.length; i++) {
     this.particles[i].move();
