@@ -6,7 +6,8 @@ var GravityApp = function (canvas) {
   this.flagResizeCanvas = false;
   this.currentTime = window.performance.now();
   this.mouse = new Vec2(0, 0);
-  this.particleSystem = new ParticleSystem();
+
+  this.particleSystem = new ParticleSystem(this);
 
   this.resizeCanvas();
 

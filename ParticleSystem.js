@@ -1,6 +1,7 @@
 'use strict';
 
-var ParticleSystem = function () {
+var ParticleSystem = function (parent) {
+  this.parent = parent;
   this.particles = [];
 };
 
