@@ -14,3 +14,13 @@ ParticleState.prototype.set = function (px, py, vx, vy) {
   this.pos.set(px, py);
   this.vel.set(vx, vy);
 };
+
+ParticleState.prototype.addv = function (other) {
+  this.pos.addv(other.pos);
+  this.vel.addv(other.vel);
+};
+
+ParticleState.prototype.mult = function (s) {
+  this.pos.mult(s);
+  this.vel.mult(s);
+};

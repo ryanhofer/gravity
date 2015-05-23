@@ -41,26 +41,28 @@ Particle.prototype.acceleration = function (out, state, particles) {
     ay += (force / this.mass) * dy / d;
   }
 
-  out.vel.x = ax;
-  out.vel.y = ay;
+  out.vel.set(ax, ay);
 };
 
 Particle.prototype.initRK4 = function (out, particles) {
-  out.pos.x = this.state.vel.x;
-  out.pos.y = this.state.vel.y;
+  out.pos.setv(this.state.vel);
   this.acceleration(out, this.state, particles);
 };
 
 Particle.prototype.evalRK4 = function (out, particles, deriv, dt) {
-  var st = new ParticleState(
-    this.state.pos.x + deriv.pos.x * dt,
-    this.state.pos.y + deriv.pos.y * dt,
-    this.state.vel.x + deriv.vel.x * dt,
-    this.state.vel.y + deriv.vel.y * dt
-  );
-  out.pos.x = st.vel.x;
-  out.pos.y = st.vel.y;
-  this.acceleration(out, st, particles);
+  // var st = new ParticleState(
+  // this.nextState.set(
+  //   this.state.pos.x + deriv.pos.x * dt,
+  //   this.state.pos.y + deriv.pos.y * dt,
+  //   this.state.vel.x + deriv.vel.x * dt,
+  //   this.state.vel.y + deriv.vel.y * dt
+  // );
+  this.nextState.setv(deriv);
+  this.nextState.mult(dt);
+  this.nextState.addv(this.state);
+  
+  out.pos.setv(this.nextState.vel);
+  this.acceleration(out, this.nextState, particles);
 };
 
 Particle.prototype.computeNextState = function (particles, dt) {

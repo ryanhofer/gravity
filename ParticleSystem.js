@@ -70,8 +70,7 @@ ParticleSystem.prototype.resolveCollisions = function () {
         var vy = (pL.state.vel.y * pL.mass + pS.state.vel.y * pS.mass) / (pL.mass + pS.mass);
         pL.mass += pS.mass;
         pL.radius = pL.getRadiusFromMass(pL.mass);
-        pL.state.vel.x = vx;
-        pL.state.vel.y = vy;
+        pL.state.vel.set(vx, vy);
       }
     }
   }
