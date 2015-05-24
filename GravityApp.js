@@ -4,17 +4,19 @@ var GravityApp = function (canvas) {
   this.canvas = canvas;
   this.gl = canvas.getContext('2d');
   this.currentTime = window.performance.now();
+  this.components = [];
 
-  this.particleSystem = new ParticleSystem(this);
-  this.gui = new GravityGui(this);
+  this.components.push(new ParticleSystem(this));
+  this.components.push(new GravityGui(this));
 };
 
 GravityApp.prototype.run = function () {
   this.currentTime = window.performance.now();
 
   // Initialize components
-  this.particleSystem.init();
-  this.gui.init();
+  for (var i = 0; i < this.components.length; i++) {
+    this.components[i].init();
+  }
 
   window.requestAnimationFrame(this.prepareFrame.bind(this));
 };
@@ -30,8 +32,9 @@ GravityApp.prototype.prepareFrame = function (timestamp) {
 
 GravityApp.prototype.update = function (deltaTime) {
   // Update components
-  this.particleSystem.update(deltaTime);
-  this.gui.update(deltaTime);
+  for (var i = 0; i < this.components.length; i++) {
+    this.components[i].update(deltaTime);
+  }
 };
 
 GravityApp.prototype.render = function () {
@@ -43,8 +46,9 @@ GravityApp.prototype.render = function () {
   //TODO: view transformation
 
   // Draw components
-  this.particleSystem.draw(gl);
-  this.gui.draw(gl);
+  for (var i = 0; i < this.components.length; i++) {
+    this.components[i].draw(gl);
+  }
 
   gl.restore();
 };
