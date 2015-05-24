@@ -3,22 +3,10 @@
 var GravityApp = function (canvas) {
   this.canvas = canvas;
   this.gl = canvas.getContext('2d');
-  this.flagResizeCanvas = false;
   this.currentTime = window.performance.now();
-  this.mouse = new Vec2(0, 0);
 
   this.particleSystem = new ParticleSystem(this);
-
-  this.resizeCanvas();
-
-  window.addEventListener('resize', (function (e) {
-    this.flagResizeCanvas = true;
-  }).bind(this));
-
-  this.canvas.addEventListener('mousemove', (function (e) {
-    this.mouse.set(e.pageX, e.pageY);
-    // console.log('Mouse: ', this.mouse);
-  }).bind(this));
+  this.gui = new GravityGui(this);
 };
 
 GravityApp.prototype.run = function () {
@@ -26,6 +14,7 @@ GravityApp.prototype.run = function () {
 
   // Initialize components
   this.particleSystem.init();
+  this.gui.init();
 
   window.requestAnimationFrame(this.prepareFrame.bind(this));
 };
@@ -33,11 +22,6 @@ GravityApp.prototype.run = function () {
 GravityApp.prototype.prepareFrame = function (timestamp) {
   var deltaTime = timestamp - this.currentTime;
   this.currentTime = timestamp;
-
-  if (this.flagResizeCanvas) {
-    this.flagResizeCanvas = false;
-    this.resizeCanvas();
-  }
 
   this.update(deltaTime);
   this.render();
@@ -47,6 +31,7 @@ GravityApp.prototype.prepareFrame = function (timestamp) {
 GravityApp.prototype.update = function (deltaTime) {
   // Update components
   this.particleSystem.update(deltaTime);
+  this.gui.update(deltaTime);
 };
 
 GravityApp.prototype.render = function () {
@@ -59,12 +44,7 @@ GravityApp.prototype.render = function () {
 
   // Draw components
   this.particleSystem.draw(gl);
+  this.gui.draw(gl);
 
   gl.restore();
-};
-
-GravityApp.prototype.resizeCanvas = function () {
-  this.canvas.width = window.innerWidth;
-  this.canvas.height = window.innerHeight;
-  console.log('Resized: ', this.canvas.width, this.canvas.height);
 };
