@@ -12,6 +12,8 @@ ParticleSystem.prototype.RANDOM_BOUNDS = new Vec2(1000, 1000);
 
 ParticleSystem.prototype.init = function () {
   this.randomize(this.RANDOM_BOUNDS);
+  this.resolveCollisions();
+  this.cleanupMerged();
 };
 
 ParticleSystem.prototype.randomize = function (bounds) {
