@@ -39,9 +39,9 @@ GravityApp.prototype.update = function (deltaTime) {
 
 GravityApp.prototype.render = function () {
   var gl = this.gl;
+  gl.setTransform(1,0,0,1,0,0);
   gl.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-  gl.save();
   gl.translate(this.canvas.width/2, this.canvas.height/2);
   //TODO: view transformation
 
@@ -49,6 +49,4 @@ GravityApp.prototype.render = function () {
   for (var i = 0; i < this.components.length; i++) {
     this.components[i].draw(gl);
   }
-
-  gl.restore();
 };
