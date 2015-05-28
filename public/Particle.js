@@ -48,13 +48,6 @@ Particle.prototype.initRK4 = function (out, particles) {
 };
 
 Particle.prototype.evalRK4 = function (out, particles, deriv, dt) {
-  // var st = new ParticleState(
-  // this.nextState.set(
-  //   this.state.pos.x + deriv.pos.x * dt,
-  //   this.state.pos.y + deriv.pos.y * dt,
-  //   this.state.vel.x + deriv.vel.x * dt,
-  //   this.state.vel.y + deriv.vel.y * dt
-  // );
   this.nextState.setv(deriv);
   this.nextState.mult(dt);
   this.nextState.addv(this.state);
@@ -74,17 +67,15 @@ Particle.prototype.computeNextState = function (particles, dt) {
   this.evalRK4(c, particles, b, dt * 0.5);
   this.evalRK4(d, particles, c, dt);
 
-  var dpxdt = (a.pos.x + 2.0 * (b.pos.x + c.pos.x) + d.pos.x) / 6.0;
-  var dpydt = (a.pos.y + 2.0 * (b.pos.y + c.pos.y) + d.pos.y) / 6.0;
-  var dvxdt = (a.vel.x + 2.0 * (b.vel.x + c.vel.x) + d.vel.x) / 6.0;
-  var dvydt = (a.vel.y + 2.0 * (b.vel.y + c.vel.y) + d.vel.y) / 6.0;
-
-  this.nextState.set(
-    this.state.pos.x + dpxdt * dt,
-    this.state.pos.y + dpydt * dt,
-    this.state.vel.x + dvxdt * dt,
-    this.state.vel.y + dvydt * dt
-  );
+  var out = this.nextState;
+  
+  out.setv(b);
+  out.addv(c);
+  out.mult(2.0);
+  out.addv(a);
+  out.addv(d);
+  out.mult(dt/6.0);
+  out.addv(this.state);
 };
 
 Particle.prototype.move = function () {
