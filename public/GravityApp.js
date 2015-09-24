@@ -1,52 +1,56 @@
-'use strict';
+var GravityApp = (function(){
+  'use strict';
 
-var GravityApp = function (canvas) {
-  this.canvas = canvas;
-  this.gl = canvas.getContext('2d');
-  this.currentTime = window.performance.now();
-  this.components = [];
+  function GravityApp(canvas) {
+    this.canvas = canvas;
+    this.gl = canvas.getContext('2d');
+    this.currentTime = window.performance.now();
+    this.components = [];
 
-  this.components.push(new ParticleSystem(this));
-  this.components.push(new GravityGui(this));
-};
-
-GravityApp.prototype.run = function () {
-  this.currentTime = window.performance.now();
-
-  // Initialize components
-  for (var i = 0; i < this.components.length; i++) {
-    this.components[i].init();
+    this.components.push(new ParticleSystem(this));
+    this.components.push(new GravityGui(this));
   }
 
-  window.requestAnimationFrame(this.prepareFrame.bind(this));
-};
+  GravityApp.prototype.run = function () {
+    this.currentTime = window.performance.now();
 
-GravityApp.prototype.prepareFrame = function (timestamp) {
-  var deltaTime = timestamp - this.currentTime;
-  this.currentTime = timestamp;
+    // Initialize components
+    for (var i = 0; i < this.components.length; i++) {
+      this.components[i].init();
+    }
 
-  this.update(deltaTime);
-  this.render();
-  window.requestAnimationFrame(this.prepareFrame.bind(this));
-};
+    window.requestAnimationFrame(this.prepareFrame.bind(this));
+  };
 
-GravityApp.prototype.update = function (deltaTime) {
-  // Update components
-  for (var i = 0; i < this.components.length; i++) {
-    this.components[i].update(deltaTime);
-  }
-};
+  GravityApp.prototype.prepareFrame = function (timestamp) {
+    var deltaTime = timestamp - this.currentTime;
+    this.currentTime = timestamp;
 
-GravityApp.prototype.render = function () {
-  var gl = this.gl;
-  gl.setTransform(1,0,0,1,0,0);
-  gl.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.update(deltaTime);
+    this.render();
+    window.requestAnimationFrame(this.prepareFrame.bind(this));
+  };
 
-  gl.translate(this.canvas.width/2, this.canvas.height/2);
-  //TODO: view transformation
+  GravityApp.prototype.update = function (deltaTime) {
+    // Update components
+    for (var i = 0; i < this.components.length; i++) {
+      this.components[i].update(deltaTime);
+    }
+  };
 
-  // Draw components
-  for (var i = 0; i < this.components.length; i++) {
-    this.components[i].draw(gl);
-  }
-};
+  GravityApp.prototype.render = function () {
+    var gl = this.gl;
+    gl.setTransform(1,0,0,1,0,0);
+    gl.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    gl.translate(this.canvas.width/2, this.canvas.height/2);
+    //TODO: view transformation
+
+    // Draw components
+    for (var i = 0; i < this.components.length; i++) {
+      this.components[i].draw(gl);
+    }
+  };
+
+  return GravityApp;
+})();
